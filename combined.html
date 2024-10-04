@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odd or Even Checker and Name Filter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: pink;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            animation: dropIn 2s;
+        }
+        h2 {
+            margin-top: 30px;
+            color: #2980b9;
+            font-size: 1.8em;
+            animation: zoomIn 1s;
+        }
+        form {
+            margin: 30px auto;
+            display: inline-block;
+            background: #ffffff;
+            border: 2px solid #2980b9;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+        form:hover {
+            transform: scale(1.08);
+        }
+        input {
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #2980b9;
+            border-radius: 6px;
+            width: 220px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1c5983;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 8px;
+            background: #d5dbdb;
+            margin: 8px 0;
+            border-radius: 6px;
+            animation: fadeInUp 0.7s forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes dropIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Odd or Even Checker & Name Filter</h1>
+
+    <!-- Odd or Even Checker Form -->
+    <h2>Odd or Even Checker</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="number">Enter a Number:</label>
+        <input type="number" name="number" id="number" required>
+        <button type="submit">Check</button>
+    </form>
+
+    <!-- Display the result of Odd or Even Checker -->
+    {% if result is not None %}
+        <h3>The number {{ number }} is {{ result }}.</h3>
+    {% endif %}
+
+    <hr>
+
+    <!-- Name Filter Form -->
+    <h2>Search Names Starting with a Specific Character</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="query">Enter a Character:</label>
+        <input type="text" name="query" id="query" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Display the filtered names -->
+    {% if filtered_words %}
+        <h3>Names starting with "{{ query }}":</h3>
+        <ul>
+        {% for word in filtered_words %}
+            <li>{{ word }}</li>
+        {% endfor %}
+        </ul>
+    {% elif query %}
+        <h3>No names found starting with "{{ query }}".</h3>
+    {% endif %}
+
+</body>
+</html>
